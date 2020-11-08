@@ -13,6 +13,9 @@ export default function CommentList(props) {
         <Comment />
         <Comment />
         <Comment />
+        <Comment />
+        <Comment />
+
 
     </div>
   );

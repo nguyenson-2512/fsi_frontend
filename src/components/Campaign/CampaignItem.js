@@ -33,7 +33,7 @@ export default class CampaignItem extends React.Component {
             
             <tr>
             <td>{this.props.info.id}</td>
-            <td>{this.props.info.name}</td>
+            <td>{this.props.info.project_name}</td>
             <td>{this.props.info.company}</td>
             <td>
               <span className="dot">
@@ -41,8 +41,8 @@ export default class CampaignItem extends React.Component {
                 {this.props.info.description}
               </span>
             </td>
-            <td>{this.props.info.start}</td>
-            <td>{this.props.info.end}</td>
+            <td>{this.props.info.start_time}</td>
+            <td>{this.props.info.end_time}</td>
             <td>
 
       

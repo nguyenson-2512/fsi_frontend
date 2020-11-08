@@ -123,10 +123,10 @@ export default class CreateCampaign extends React.Component {
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="name"
+                  name="project_name"
                   id="name"
                   placeholder=""
-                  value={this.state.name}
+                  value={this.state.item.project_name}
                   onChange={this.handleChange}
                   // onChange={e => this.setState({name: e.target.value})}
                 />
@@ -143,7 +143,7 @@ export default class CreateCampaign extends React.Component {
                 type="text"
                 name="company"
                 placeholder=""
-                value={this.state.company}
+                value={this.state.item.company}
                 onChange={this.handleChange}
                 // onChange={e => this.setState({company: e.target.value})}
               />
@@ -151,12 +151,12 @@ export default class CreateCampaign extends React.Component {
           </FormGroup>
       
             <FormGroup>
-              <Label for="start">Thời gian bắt đầu</Label>
+              <Label for="start_time">Thời gian bắt đầu</Label>
               <Input
                 type="date"
               
-                name="start"
-                id="start"
+                name="start_time"
+                id="start_time"
                 placeholder="date placeholder"
                 onChange={this.handleChange}
                 // onChange={e => this.setState({start: e.target.value})}
@@ -164,11 +164,11 @@ export default class CreateCampaign extends React.Component {
             </FormGroup>
       
             <FormGroup>
-            <Label for="finish">Thời gian kết thúc</Label>
+            <Label for="end_time">Thời gian kết thúc</Label>
             <Input
               type="date"
               
-              name="end"
+              name="end_time"
               id="finish"
               placeholder="date placeholder"
               onChange={this.handleChange}
@@ -185,7 +185,7 @@ export default class CreateCampaign extends React.Component {
                 type="textarea"
                 name="description"
                 id="description"
-                value={this.state.description}
+                value={this.state.item.description}
                 onChange={this.handleChange}
                 // onChange={e => this.setState({description: e.target.value})}
                 />

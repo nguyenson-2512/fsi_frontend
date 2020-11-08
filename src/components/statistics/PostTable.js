@@ -1,13 +1,10 @@
 import React from 'react';
 import '../../App.css'
 
+import axios from 'axios'
+
 export default class PostTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            postAmount: 5
-        }
-    }
+
 
     render() {
         return (
@@ -16,7 +13,7 @@ export default class PostTable extends React.Component {
               <p>
                 <i class="fas fa-newspaper"></i>
               </p>
-              <h3>{this.state.postAmount}</h3>
+              <h3>{this.props.postAmount}</h3>
               <p>Số lượng bài đăng</p>
             </div>
           </div>

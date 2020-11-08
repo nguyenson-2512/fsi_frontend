@@ -20,11 +20,14 @@ export default class CampaignList extends React.Component {
     this.state = {
       listCampaign: [],
       item: {
-        name: '',
+        project_name: '',
         company: '',
-        start: '',
-        end: '',
+        start_time: '',
+        end_time: '',
         description: '',
+        create_at: '2020-11-02 16:46:23',
+        user_id: '1',
+        id: '666'
       },
       showCreateForm: false,
     };
@@ -37,7 +40,8 @@ export default class CampaignList extends React.Component {
     axios
       // .get("http://localhost:8000/api/todos/")
       // .then((res) => this.setState({ todoList: res.data }))
-      .get("http://localhost:8000/api/campaigns/")
+      // .get("http://localhost:8000/api/campaigns/")
+      .get("https://still-peak-07389.herokuapp.com/all_project/1")
       .then((res) => this.setState({ listCampaign: res.data }))
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -46,7 +50,7 @@ export default class CampaignList extends React.Component {
   handleDelete = (item) => {
     axios
       // .delete(`http://localhost:8000/api/campaigns/${item.id}`)
-      .delete(`http://localhost:8000/api/campaigns/${item.id}`)
+      .delete(`https://still-peak-07389.herokuapp.com/project_id/${item.id}`)
       .then((res) => this.refreshList());
   };
 
@@ -117,7 +121,7 @@ export default class CampaignList extends React.Component {
 
   handleSubmit = (item) => {
     axios
-    .post("http://localhost:8000/api/campaigns/", item)
+    .post("https://still-peak-07389.herokuapp.com/all_project/1", item)
     .then((res) => this.refreshList());
   }
 

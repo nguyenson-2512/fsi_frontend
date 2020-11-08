@@ -1,13 +1,9 @@
 import React from 'react';
 import '../../App.css'
 
+import axios from 'axios'
+
 export default class LikeTable extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            likeAmount: 555
-        }
-    }
 
     render() {
         return (
@@ -16,7 +12,7 @@ export default class LikeTable extends React.Component {
               <p>
                 <i class="fas fa-thumbs-up"></i>
               </p>
-              <h3>{this.state.likeAmount}</h3>
+              <h3>{this.props.likeAmount}</h3>
               <p>Số lượng likes</p>
             </div>
           </div>

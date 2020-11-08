@@ -16,11 +16,12 @@ import {
   CardTitle,
   CardText,
 } from "reactstrap";
+import axios from "axios";
 
-import PostTable from "./Table/PostTable";
-import CommentTable from "./Table/CommentTable";
-import LikeTable from "./Table/LikeTable";
+import Statistics from "./statistics/Statistics";
+
 import DoughnutChart from "./Charts/DoughnutChart";
+import Doughnut from "./Charts/Doughnut";
 
 import CommentList from "./CommentList";
 
@@ -238,7 +239,6 @@ class LineChart extends React.Component {
   }
 }
 
-
 class HorizontalBarChart extends React.Component {
   constructor(props) {
     super(props);
@@ -319,6 +319,9 @@ export default class Detail extends React.Component {
 
     this.state = {
       data: getData(),
+      positive: 0,
+      negative: 0,
+      neutral: 0,
     };
   }
 
@@ -332,6 +335,35 @@ export default class Detail extends React.Component {
         data: getData(),
       });
     }, 5000);
+
+    let positiveRequest = axios.get(
+      "https://still-peak-07389.herokuapp.com/num_cmt1/1"
+    );
+    let negativeRequest = axios.get(
+      "https://still-peak-07389.herokuapp.com/num_cmt_1/1"
+    );
+    let neutralRequest = axios.get(
+      "https://still-peak-07389.herokuapp.com/num_cmt0/1"
+    );
+
+    axios
+      .all([positiveRequest, negativeRequest, neutralRequest])
+      .then(
+        axios.spread((...responses) => {
+          const positiveResponse = responses[0];
+          const negativeResponse = responses[1];
+          const neutralResponse = responses[2];
+
+          this.setState({
+            positive: positiveResponse.data,
+            negative: negativeResponse.data,
+            neutral: neutralResponse.data,
+          });
+        })
+      )
+      // .then((res) => this.setState({ postAmount: res.data }))
+      // .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   }
 
   render() {
@@ -342,10 +374,67 @@ export default class Detail extends React.Component {
 
       <div className="wrapper">
         <Header />
-        <div className="row row1">
-          <PostTable />
-          <CommentTable />
-          <LikeTable />
+        <Statistics />
+
+        <div className="row row-space">
+          <div className="col-12 col-m-6 col-sm-6">
+            <Card className="card-shadow" style={{ height: "500px" }}>
+              <CardHeader tag="h3">Đánh giá phản hồi</CardHeader>
+              <CardBody>
+                <Doughnut
+                  data={[
+                    { label: "Tich cuc", value: this.state.positive },
+                    { label: "Tieu cuc", value: this.state.negative },
+                    { label: "Trung lap", value: this.state.neutral },
+                  ]}
+                  title="Bieu do quat tich tieu trung"
+                  colors={["green", "red", "gray"]}
+                />
+              </CardBody>
+              <CardFooter className="text-muted"></CardFooter>
+            </Card>
+          </div>
+          <div className="col-12 col-m-4 col-sm-4 descriptionBox">
+            <div data-aos="fade-right">
+              <h3>Lorem something</h3>
+              <p>
+                Lorem Ipsum lorem ipsum dolor sit amet, consectetur adip Lorem
+                Ipsum lorem ipsum dolor sit amet, consectetur adip
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="row row-space">
+          <div className="col-12 col-m-6 col-sm-6">
+            <Card className="card-shadow" style={{ height: "500px" }}>
+              <CardHeader tag="h3">Featured</CardHeader>
+              <CardBody>
+                <DoughnutChart
+                  data={this.state.data[3].data}
+                  title={this.state.data[3].title}
+                  colors={[
+                    "#a8e0ff",
+                    "#8ee3f5",
+                    "#70cad1",
+                    "#3e517a",
+                    "#b08ea2",
+                    "#BBB6DF",
+                  ]}
+                />
+              </CardBody>
+              <CardFooter className="text-muted">Footer</CardFooter>
+            </Card>
+          </div>
+          <div className="col-12 col-m-4 col-sm-4 descriptionBox">
+            <div data-aos="fade-right">
+              <h3>Lorem something</h3>
+              <p>
+                Lorem Ipsum lorem ipsum dolor sit amet, consectetur adip Lorem
+                Ipsum lorem ipsum dolor sit amet, consectetur adip
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="row row-space">
@@ -399,38 +488,6 @@ export default class Detail extends React.Component {
           </div>
         </div>
 
-        <div className="row row-space">
-          <div className="col-12 col-m-4 col-sm-4">
-            <Card className="card-shadow" style={{ height: "400px" }}>
-              <CardHeader tag="h3">Featured</CardHeader>
-              <CardBody>
-                <DoughnutChart
-                  data={this.state.data[3].data}
-                  title={this.state.data[3].title}
-                  colors={[
-                    "#a8e0ff",
-                    "#8ee3f5",
-                    "#70cad1",
-                    "#3e517a",
-                    "#b08ea2",
-                    "#BBB6DF",
-                  ]}
-                />
-              </CardBody>
-              <CardFooter className="text-muted">Footer</CardFooter>
-            </Card>
-          </div>
-          <div className="col-12 col-m-4 col-sm-4 descriptionBox">
-            <div data-aos="fade-right">
-              <h3>Lorem something</h3>
-              <p>
-                Lorem Ipsum lorem ipsum dolor sit amet, consectetur adip Lorem
-                Ipsum lorem ipsum dolor sit amet, consectetur adip
-              </p>
-            </div>
-          </div>
-        </div>
-
         <div className="row row-center">
           <div className="col-8 col-m-8 col-sm-8">
             <LineChart
@@ -465,9 +522,15 @@ export default class Detail extends React.Component {
         </div>
         <div className="row row-space">
           <div className="col-12 col-m-6 col-sm-6">
-            <div data-aos="fade-up">
-              <CommentList />
-            </div>
+            <Card className="card-shadow">
+              <CardHeader tag="h3">Top 5 comment tích cực</CardHeader>
+              <CardBody>
+                <div data-aos="fade-up">
+                  <CommentList />
+                </div>
+              </CardBody>
+              <CardFooter className="text-muted"></CardFooter>
+            </Card>
           </div>
 
           <div className="col-12 col-m-4 col-sm-4 descriptionBox">
@@ -481,6 +544,31 @@ export default class Detail extends React.Component {
             </div>
           </div>
         </div>
+
+        <div className="row row-space">
+        <div className="col-12 col-m-6 col-sm-6">
+          <Card className="card-shadow">
+            <CardHeader tag="h3">Top 5 comment tiêu cực</CardHeader>
+            <CardBody>
+              <div data-aos="fade-up">
+                <CommentList />
+              </div>
+            </CardBody>
+            <CardFooter className="text-muted"></CardFooter>
+          </Card>
+        </div>
+
+        <div className="col-12 col-m-4 col-sm-4 descriptionBox">
+          <div data-aos="fade-right">
+            <h3>Lorem something</h3>
+
+            <p>
+              Lorem Ipsum lorem ipsum dolor sit amet, consectetur adip Lorem
+              Ipsum lorem ipsum dolor sit amet, consectetur adip
+            </p>
+          </div>
+        </div>
+      </div>
       </div>
     );
   }
