@@ -8,6 +8,7 @@ import Header from "../components/Header";
 
 import { Button } from "antd";
 import axios from 'axios';
+import generateUniqueId from 'generate-unique-id';
 
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -27,7 +28,7 @@ export default class CampaignList extends React.Component {
         description: '',
         create_at: '2020-11-02 16:46:23',
         user_id: '1',
-        id: '666'
+        id: generateUniqueId()
       },
       showCreateForm: false,
     };
@@ -120,6 +121,7 @@ export default class CampaignList extends React.Component {
   };
 
   handleSubmit = (item) => {
+    console.log('-item dem di post day: ',item)
     axios
     .post("https://still-peak-07389.herokuapp.com/all_project/1", item)
     .then((res) => this.refreshList());

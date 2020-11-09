@@ -20,6 +20,7 @@
     "chart.js": "^2.9.4",
     "framer": "^1.2.9",
     "framer-motion": "^2.9.4",
+    "generate-unique-id": "^2.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

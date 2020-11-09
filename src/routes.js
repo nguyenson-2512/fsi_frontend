@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Detail from "./components/Detail";
 import CampaignList from "./pages/CampaignList";
 import Welcome from './pages/Welcome'
@@ -13,7 +13,13 @@ const ROUTES = [
   {
     path: "/app",
     key: "APP",
-    component: RenderRoutes,
+    component: props => {
+      if (!localStorage.getItem("token")) {
+        alert("You need to log in to access app routes");
+        return <Redirect to={"/"} />;
+      }
+      return <RenderRoutes {...props} />;
+    },
     routes: [
       {
         path: "/app",

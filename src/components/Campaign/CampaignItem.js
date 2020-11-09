@@ -48,7 +48,11 @@ export default class CampaignItem extends React.Component {
       
             <Button style={{padding: '4px 10px 10px 10px'}} outline color="secondary" onClick={this.props.delete}><DeleteOutlined /></Button>
             </td>
-            <td><Link to="/app/detail"><Button style={{padding: '4px 10px 10px 10px'}} className="buttonCampaign" outline color="secondary"><RightSquareOutlined /></Button></Link></td>
+            <td><Link to={{
+              pathname: '/app/detail',
+              state:this.props.info.id
+             }
+     }><Button style={{padding: '4px 10px 10px 10px'}} className="buttonCampaign" outline color="secondary"><RightSquareOutlined /></Button></Link></td>
 
           </tr>
         )

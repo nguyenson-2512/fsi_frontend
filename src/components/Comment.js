@@ -1,6 +1,6 @@
 import React from "react";
 import image from '../assets/huong.jpg'
-import i from '../assets/iconfinder_afro_woman_female_person_4043231.png'
+import avatar from '../assets/iconfinder_afro_woman_female_person_4043231.png'
 // import i from '../assets/iconfinder_boy_male_avatar_portrait_4043236.png'
 
 export default function Comment() {
@@ -12,7 +12,7 @@ export default function Comment() {
         className="mr-3 bg-light rounded"
         width="48"
         height="48"
-        src={i}
+        src={avatar}
         alt="jfj"
       />
 
