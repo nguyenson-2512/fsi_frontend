@@ -1,50 +1,46 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { CardBody, Card, CardHeader } from "reactstrap";
-
-import axios from "axios";
-
 import {
+  CardBody,
+  Card,
+  CardHeader,
   Col,
-  FormText,
   Form,
   Label,
   FormGroup,
   Input,
   Button,
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 
 import "../../App.css";
+import ReactTagInput from "@pathofdev/react-tag-input";
+import "@pathofdev/react-tag-input/build/index.css";
 
 export default class CreateCampaign extends React.Component {
   constructor(props) {
     super(props);
-    // this.onFormSubmit = this.onFormSubmit.bind(this);
-    // this.state = {
-    //     name: '',
-    //     company: '',
-    //     start: '',
-    //     end: '',
-    //     description: '',
-    //     showCreateForm: false
-    // }
     this.state = {
       item: this.props.item,
+      dropdownOpen: false,
+      listPage: [{id: 1,name: 'page1'},{id: 2,name: 'page2'},{id: 3,name: 'page3'}]
     };
     this.myRef = React.createRef();
   }
 
-  // handleChange = (e) => {
-  //   let { name, company, start, end, description } = e.target;
-  //   const activeItem = { ...this.state.activeItem,  };
-  //   this.setState({ activeItem });
-  // };
+  componentDidMount() {
+    if (this.props.active) {
+      this.myRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  }
 
   handleChange = (e) => {
     let { name, value } = e.target;
     const item = { ...this.state.item, [name]: value };
     this.setState({ item });
-    console.log(this.state.item);
   };
 
   handleCancel = () => {
@@ -54,50 +50,13 @@ export default class CreateCampaign extends React.Component {
     this.props.cancel();
   };
 
-  //     handleSubmit = (event) => {
-  //       event.preventDefault()
-  //       const item = {
-  //         name: this.state.name,
-  //         company: this.state.company,
-  //         start: this.state.start,
-  //         end: this.state.end,
-  //         description: this.state.description,
-  //       }
-
-  //       console.log(item)
-
-  //       axios.post('http://localhost:8000/api/campaigns/', item
-  //       ,
-  //        {
-  //         headers: {
-  //             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-  //         }
-  // }
-  //       )
-  //         .then(res => {
-  //           console.log(res);
-  //           console.log(res.data);
-  //         })
-  //         .catch((err) => console.log( err.response.request._response ));
-  //     }
-
-  // onFormSubmit() {
-  // alert(JSON.stringify(this.state, null, '  '));
-  //  console.log(this.state)
-  //post method api
-  // }
-
-  componentDidMount() {
-    if (this.props.active) {
-      // whatever your test might be
-      this.myRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-        inline: "nearest",
-      });
-    }
+  toggle = () => {
+    this.setState({dropdownOpen: !this.state.dropdownOpen});
   }
 
+  pageChoice = (id) => {
+    alert(id)
+  }
   render() {
     const { onSubmit } = this.props;
     return (
@@ -112,9 +71,6 @@ export default class CreateCampaign extends React.Component {
             <CardBody>
               <Form
                 onSubmit={() => {
-                  // const item = { ...this.state.item, id: Math.floor(Math.random()*10000).toString()};
-                  // console.log('item cuat nef', item)
-                  // this.setState({ item });
                   onSubmit(this.state.item);
                 }}
               >
@@ -147,7 +103,6 @@ export default class CreateCampaign extends React.Component {
                       placeholder=""
                       value={this.state.item.company}
                       onChange={this.handleChange}
-                      // onChange={e => this.setState({company: e.target.value})}
                     />
                   </Col>
                 </FormGroup>
@@ -160,7 +115,6 @@ export default class CreateCampaign extends React.Component {
                     id="start_time"
                     placeholder="date placeholder"
                     onChange={this.handleChange}
-                    // onChange={e => this.setState({start: e.target.value})}
                   />
                 </FormGroup>
 
@@ -172,7 +126,6 @@ export default class CreateCampaign extends React.Component {
                     id="finish"
                     placeholder="date placeholder"
                     onChange={this.handleChange}
-                    // onChange={e => this.setState({end: e.target.value})}
                   />
                 </FormGroup>
 
@@ -187,7 +140,40 @@ export default class CreateCampaign extends React.Component {
                       id="description"
                       value={this.state.item.description}
                       onChange={this.handleChange}
-                      // onChange={e => this.setState({description: e.target.value})}
+                    />
+                  </Col>
+                </FormGroup>
+
+
+                <FormGroup row>
+                <Col sm={10}>
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                <DropdownToggle caret>
+                  Lựa chọn page
+                </DropdownToggle>
+                <DropdownMenu bottom>
+                  {this.state.listPage.map((page) => {
+                    return <DropdownItem onClick={() => this.pageChoice(page.id)}>{page.name}</DropdownItem>
+                  })}
+                </DropdownMenu>
+              </Dropdown>
+              </Col>
+
+              </FormGroup>
+
+                <FormGroup row>
+                  <Label for="description" sm={5}>
+                    Keywords
+                  </Label>
+                  <Col sm={10}>
+                    <ReactTagInput
+                      tags={this.state.item.keyword.keyword}
+                      maxTags={10}
+                      placeholder="Nhập và nhấn enter"
+                      onChange={(newTags) => {
+                        const item = {...this.state.item, keyword: {...this.state.item.keyword, keyword: newTags}}
+                        this.setState({item});
+                      }}
                     />
                   </Col>
                 </FormGroup>

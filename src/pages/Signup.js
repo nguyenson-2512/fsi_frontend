@@ -1,11 +1,8 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-// import '../components/style1.css'
 import '../App.css'
 
 import {
-  Switch,
-  Route,
   Link,
   Redirect,
   useHistory
@@ -34,7 +31,8 @@ function SignupForm() {
 
   function handle_signup(e, data) {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/app/users/', {
+    fetch('https://still-peak-07389.herokuapp.com/users/', {
+    // fetch('http://localhost:8000/app/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -77,7 +75,7 @@ function SignupForm() {
 
   return (
     <div className="container-first">
-    <p className="title leftTitle">Create new account</p>
+    <p className="title_first leftTitle">Create new account</p>
     <form onSubmit={(e) => handle_signup(e, state)} className="formControl">
         <div className="inputContainer">
         <input

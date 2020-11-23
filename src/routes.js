@@ -1,10 +1,12 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Detail from "./components/Detail";
+import Detail from './pages/Detail'
 import CampaignList from "./pages/CampaignList";
 import Welcome from './pages/Welcome'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import AboutUs from './pages/AboutUs'
+import Profile from './pages/Profile'
 
 const ROUTES = [
   { path: "/", key: "ROOT", exact: true, component: Welcome },
@@ -14,7 +16,7 @@ const ROUTES = [
     path: "/app",
     key: "APP",
     component: props => {
-      if (!localStorage.getItem("token")) {
+      if (!localStorage.getItem("user")) {
         alert("You need to log in to access app routes");
         return <Redirect to={"/"} />;
       }
@@ -37,13 +39,13 @@ const ROUTES = [
         path: "/app/profile",
         key: "APP_PROFILE",
         exact: true,
-        component: () => <h1>profile page</h1>,
+        component: Profile,
       },
       {
         path: "/app/aboutUs",
         key: "APP_ABOUT_US",
         exact: true,
-        component: () => <h1>about us page</h1>,
+        component: AboutUs,
       },
     ],
   },

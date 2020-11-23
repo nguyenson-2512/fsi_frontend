@@ -1,7 +1,7 @@
 import React from "react";
-import PostTable from "./PostTable";
-import CommentTable from "./CommentTable";
-import LikeTable from "./LikeTable";
+import PostBox from "./PostBox";
+import CommentBox from "./CommentBox";
+import LikeBox from "./LikeBox";
 import "../../App.css";
 import axios from "axios";
 
@@ -17,15 +17,22 @@ export default class Statistics extends React.Component {
 
   componentDidMount() {
     let postRequest = axios.get(
-      "https://still-peak-07389.herokuapp.com/num_post/1"
-    );
+      // "https://still-peak-07389.herokuapp.com/num_post/777",{ headers: { "Authorization": `JWT ${localStorage.getItem("token")}`}});
+      "https://gentle-island-41460.herokuapp.com/num_post/5");
     let commentRequest = axios.get(
-      "https://still-peak-07389.herokuapp.com/num_comment/1"
-    );
+      // "https://gentle-island-41460.herokuapp.com/num_comment/5",{ headers: { "Authorization": `JWT ${localStorage.getItem("token")}`}}
+      "https://gentle-island-41460.herokuapp.com/num_comment/5")
     let likeRequest = axios.get(
-      "https://still-peak-07389.herokuapp.com/post_alllike/1"
-    );
+      "https://gentle-island-41460.herokuapp.com/post_alllike/5")
 
+        //thay 5 (project_id) => this.props.
+      //thay 5 (project_id) => this.props.
+      //thay 5 (project_id) => this.props. dc truyen tu ben detail
+      //thay 5 (project_id) => this.props
+      //thay 5 (project_id) => this.props.
+      //thay 5 (project_id) => this.props.
+      //thay 5 (project_id) => this.props.
+      //thay 5 (project_id) => this.props.
     axios
       .all([postRequest, commentRequest, likeRequest])
       .then(
@@ -36,7 +43,7 @@ export default class Statistics extends React.Component {
 
           this.setState({
             postAmount: postResponse.data,
-            commentAmount: commentResponse.data.num_comments__sum,
+            commentAmount: commentResponse.data,
             likeAmount: likeResponse.data.num_likes__sum,
           });
         })
@@ -48,9 +55,9 @@ export default class Statistics extends React.Component {
   render() {
     return (
       <div className="row row1">
-        <PostTable postAmount={this.state.postAmount} />
-        <CommentTable commentAmount={this.state.commentAmount} />
-        <LikeTable likeAmount={this.state.likeAmount} />
+        <PostBox postAmount={this.state.postAmount} />
+        <CommentBox commentAmount={this.state.commentAmount} />
+        <LikeBox likeAmount={this.state.likeAmount} />
       </div>
     );
   }

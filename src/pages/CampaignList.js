@@ -1,18 +1,15 @@
-import React, { Fragment } from "react";
+import React from "react";
 import "../fontawesome-free/css/all.min.css";
 import "../App.css";
 import CampaignItem from "../components/Campaign/CampaignItem";
 import CreateCampaign from "../components/Campaign/CreateCampaign";
-
-import Header from "../components/Header";
+import Header1 from "../components/Header/Header1";
+// import Loader from '../components/Loader/Loader'
 
 import { Button } from "antd";
-import axios from 'axios';
-import generateUniqueId from 'generate-unique-id';
-
-import { AnimatePresence, motion } from "framer-motion";
-
-import { Switch, Route, Link } from "react-router-dom";
+import axios from "axios";
+// import generateUniqueId from 'generate-unique-id';
+import { motion } from "framer-motion";
 
 export default class CampaignList extends React.Component {
   constructor(props) {
@@ -21,16 +18,18 @@ export default class CampaignList extends React.Component {
     this.state = {
       listCampaign: [],
       item: {
-        project_name: '',
-        company: '',
-        start_time: '',
-        end_time: '',
-        description: '',
-        create_at: '2020-11-02 16:46:23',
-        user_id: '1',
-        id: generateUniqueId()
+        project_name: "",
+        company: "",
+        start_time: "",
+        end_time: "",
+        description: "",
+        keyword: {keyword: []},
+        user_id: JSON.parse(localStorage.getItem("user")).id,
+        id: Math.floor(Math.random() * 100000000).toString(),
+        // id: generateUniqueId()
       },
       showCreateForm: false,
+      loading: false,
     };
   }
 
@@ -39,78 +38,23 @@ export default class CampaignList extends React.Component {
   }
   refreshList = () => {
     axios
-      // .get("http://localhost:8000/api/todos/")
-      // .then((res) => this.setState({ todoList: res.data }))
-      // .get("http://localhost:8000/api/campaigns/")
-      .get("https://still-peak-07389.herokuapp.com/all_project/1")
-      .then((res) => this.setState({ listCampaign: res.data }))
-      .then((res) => console.log(res))
+      .get(
+        `https://gentle-island-41460.herokuapp.com/all_project/${this.state.item.user_id}`
+      )
+      .then((res) => {
+        // this.setState({loading: true})
+        this.setState({ listCampaign: res.data });
+      })
+      // .then(() => this.setState({loading: false}))
       .catch((err) => console.log(err));
   };
 
   handleDelete = (item) => {
     axios
-      // .delete(`http://localhost:8000/api/campaigns/${item.id}`)
-      .delete(`https://still-peak-07389.herokuapp.com/project_id/${item.id}`)
-      .then((res) => this.refreshList());
+      .delete(`https://gentle-island-41460.herokuapp.com/project_id/${item.id}`)
+      .then((res) => this.refreshList())
+      .then(() => alert("Xóa thành công!"));
   };
-
-
-
-  // componentDidMount() {
-  //   this.refreshList();
-  // }
-  // refreshList = () => {
-  //   axios
-  //     .get(`http://localhost:8000/api/campaigns/`)
-  //     .then(res => this.setState({ listCampaign: res.data }))
-  //     .catch(err => console.log(err));
-  // };
-  // handleDelete = item => {
-  //   axios
-  //     .delete(`http://localhost:8000/api/campaigns/${item.id}`)
-  //     .then(res => this.refreshList());
-  // };
-
-  // <div className="row">
-
-  // <div className="col-10 col-m-12 col-sm-12 top">
-  //   <div className="card">
-  //     <div className="card-header">
-  //       <h3>
-  //         Danh sách chiến dịch
-  //       </h3>
-  //     </div>
-  //     <div className="card-content">
-  //       <table>
-  //         <thead>
-  //           <tr>
-  //             <th>#</th>
-  //             <th>Name of Campaign</th>
-  //             <th>Feedback</th>
-  //             <th>Result</th>
-  //             <th>Due date</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           {
-  //             this.state.listCampaign.map(info => {
-  //               return (
-  //                 <CampaignItem info={info} delete={this.handleNhap} />
-  //               )
-  //             })
-  //           }
-  //           <tr><td>                <Button type="dashed" block>
-  //           Tao chien dich
-  //         </Button></td></tr>
-
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   </div>
-  // </div>
-  // <CreateCampaign />
-  // </div>
 
   callbackHandleCancel = () => {
     this.setState({ showCreateForm: false });
@@ -121,27 +65,33 @@ export default class CampaignList extends React.Component {
   };
 
   handleSubmit = (item) => {
-    console.log('-item dem di post day: ',item)
+    console.log("-item dem di post day: ", item);
     axios
-    .post("https://still-peak-07389.herokuapp.com/all_project/1", item)
-    .then((res) => this.refreshList());
-  }
-
+      .post(
+        `https://gentle-island-41460.herokuapp.com/all_project/${this.state.item.user_id}`,
+        item
+      )
+      .then((res) => this.refreshList())
+      .then(() => window.location.reload());
+  };
   render() {
     return (
       <div className="wrapper">
-        <Header />
+        <Header1 />
+
         <div className="row">
           <div className="col-12 col-m-12 col-sm-12">
             <div className="card">
               <div className="card-header">
-                <h3>Danh sách chiến dịch</h3>
+                <h3>
+                  Danh sách chiến dịch
+                  {/*{this.state.loading && <Loader />}*/}
+                </h3>
               </div>
               <div className="card-content">
                 <table>
                   <thead style={{ background: "#e8eaf9" }}>
                     <tr>
-                      <th>#</th>
                       <th>Tên sản phẩm</th>
                       <th>Công ty</th>
                       <th>Mô tả sản phẩm</th>
