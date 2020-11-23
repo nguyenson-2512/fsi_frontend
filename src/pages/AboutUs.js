@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import "../fontawesome-free/css/all.min.css";
-import sơn from "../assets/sơn.jpg";
+import son from "../assets/son.jpg";
 import huong from "../assets/huong.jpg";
 import tran from "../assets/tran.jpg";
 import nam from "../assets/nam.jpg";
@@ -60,7 +60,7 @@ export default class AboutUs extends React.Component {
               university="Đại học Công Nghệ"
             />
             <Info
-              img={sơn}
+              img={son}
               name="Nguyễn Ngọc Trường Sơn"
               class="React Native"
               university="Đại học Công Nghệ"
