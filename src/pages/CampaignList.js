@@ -4,11 +4,9 @@ import "../App.css";
 import CampaignItem from "../components/Campaign/CampaignItem";
 import CreateCampaign from "../components/Campaign/CreateCampaign";
 import Header1 from "../components/Header/Header1";
-// import Loader from '../components/Loader/Loader'
 
 import { Button } from "antd";
 import axios from "axios";
-// import generateUniqueId from 'generate-unique-id';
 import { motion } from "framer-motion";
 
 export default class CampaignList extends React.Component {
@@ -28,7 +26,6 @@ export default class CampaignList extends React.Component {
         user_id: JSON.parse(localStorage.getItem("user")).id,
         id: Math.floor(Math.random() * 100000000).toString(),
         page_id: "",
-        // id: generateUniqueId()
       },
       showCreateForm: false,
       loading: false,
@@ -48,28 +45,9 @@ export default class CampaignList extends React.Component {
         `https://gentle-island-41460.herokuapp.com/all_project/${this.state.item.user_id}`
       )
       .then((res) => {
-        // this.setState({loading: true})
         this.setState({ listCampaign: res.data });
       })
-      // .then(() => this.setState({loading: false}))
       .catch((err) => console.log(err));
-
-    // const info = JSON.parse(localStorage.getItem("user"));
-    // console.log(info)
-    // fetch("https://devc-model.herokuapp.com/user_token", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: {
-    //     access_token: info.token.toString(),
-    //   },
-    // })
-    //   .then((res) => res.json)
-    //   .then((json) => {
-    //     console.log(json);
-    //     localStorage.setItem("longTermToken", JSON.stringify(json));
-    //   });
   };
 
   handleDelete = (item) => {
@@ -105,10 +83,7 @@ export default class CampaignList extends React.Component {
           <div className="col-12 col-m-12 col-sm-12">
             <div className="card">
               <div className="card-header">
-                <h3>
-                  Danh sách chiến dịch
-                  {/*{this.state.loading && <Loader />}*/}
-                </h3>
+                <h3>Danh sách chiến dịch</h3>
               </div>
               <div className="card-content">
                 <table>

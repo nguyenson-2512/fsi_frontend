@@ -232,7 +232,6 @@ export default class Detail extends React.Component {
         <div className="row row-space">
           <div className="col-12 col-m-12 col-sm-12">
             <CommentTable project_id={location.state}/>
-            {/* TRUYỀN PROPS CHO COMMENTTABLE LÀ THIS.PROPS.LOCATION.STATE*/}
           </div>
         </div>
 

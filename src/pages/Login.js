@@ -52,9 +52,6 @@ class LoginForm extends React.Component {
         localStorage.setItem("user", JSON.stringify(json));
       })
       .then(() => {
-        // console.log(JSON.parse(localStorage.getItem("user")))
-        // const token = JSON.parse(localStorage.getItem("user")).token
-        // console.log('---token', token.toString())
         fetch("https://devc-model.herokuapp.com/user_token", {
           method: "POST",
           headers: {
@@ -73,7 +70,7 @@ class LoginForm extends React.Component {
         userUpdated.access_token = JSON.parse(
           localStorage.getItem("longTermToken")
         );
-        console.log('new update', userUpdated)
+        console.log("new update", userUpdated);
         axios
           .put(
             `https://gentle-island-41460.herokuapp.com/user/${userId}`,
@@ -85,41 +82,6 @@ class LoginForm extends React.Component {
       .then(() => {
         this.props.history.push("/app");
       });
-    // const tokenAndId = {
-    //   access_token: JSON.parse(localStorage.getItem("longTermToken"))
-    //     .access_token,
-    //   user_id: JSON.parse(localStorage.getItem("user")).id,
-    // };
-
-    // fetch("https://devc-model.herokuapp.com/user_pages", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(tokenAndId),
-    // })
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     localStorage.setItem("page", JSON.stringify(json));
-    //   })
-
-    // .then(() => {
-    //   const tokenAndId = {
-    //     access_token: JSON.parse(localStorage.getItem("longTermToken")).access_token,
-    //     user_id: JSON.parse(localStorage.getItem("user")).id,
-    //   }
-    //   fetch("https://devc-model.herokuapp.com/user_pages", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(tokenAndId),
-    //   })
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     localStorage.setItem("page", JSON.stringify(json));
-    //   })
-    // })
   };
 
   render() {
@@ -137,7 +99,6 @@ class LoginForm extends React.Component {
           callback={this.responseFacebook}
           scope="public_profile,pages_read_engagement,pages_manage_metadata,pages_read_user_content,pages_manage_posts,pages_manage_engagement"
         />
-        {/* login && loading */}
       </div>
     );
   }

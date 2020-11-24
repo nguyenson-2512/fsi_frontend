@@ -31,14 +31,15 @@ export default class CreateCampaign extends React.Component {
         { id: 3, name: "page3" },
       ],
       userPages: {},
-      page_choice: ''
+      page_choice: "",
     };
     this.myRef = React.createRef();
   }
 
   componentWillMount() {
     const tokenAndId = {
-      access_token: JSON.parse(localStorage.getItem("longTermToken")).access_token,
+      access_token: JSON.parse(localStorage.getItem("longTermToken"))
+        .access_token,
       user_id: JSON.parse(localStorage.getItem("user")).id,
     };
     fetch("https://devc-model.herokuapp.com/user_pages", {
@@ -62,36 +63,6 @@ export default class CreateCampaign extends React.Component {
         inline: "nearest",
       });
     }
-    // const info = {
-    //   access_token: JSON.parse(localStorage.getItem("longTermToken")).access_token,
-    //   user_id: JSON.parse(localStorage.getItem("user")).id,
-    // }
-
-    // fetch("https://devc-model.herokuapp.com/user_pages", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(info),
-    // })
-    // .then(res => res.json())
-    // .then(json => {
-    //   console.log(json)
-    //   this.setState({userPages: json})
-    // })
-    // .then((res) => res.json())
-    // .then((json) => {
-    //   localStorage.setItem("page", JSON.stringify(json));
-    //   this.setState({userPages: JSON.parse(localStorage.getItem("page"))})
-    // })
-    // axios
-    // .post(
-    //   "https://devc-model.herokuapp.com/user_pages",
-    //   info
-    // )
-    // .then((res) => this.setState({
-    //   userPages: res.data
-    // }))
   }
 
   handleChange = (e) => {
@@ -113,13 +84,13 @@ export default class CreateCampaign extends React.Component {
 
   pageChoice = (id) => {
     // alert(id);
-    const item = { ...this.state.item, page_id: id}
-    localStorage.setItem("page_choice",id)
-    this.setState({item})
+    const item = { ...this.state.item, page_id: id };
+    localStorage.setItem("page_choice", id);
+    this.setState({ item });
   };
   render() {
     const { onSubmit } = this.props;
-    console.log(this.state.item)
+    console.log(this.state.item);
     return (
       <div style={{ margin: "0 auto" }} className="wrapper" ref={this.myRef}>
         <div className="row">
@@ -147,7 +118,6 @@ export default class CreateCampaign extends React.Component {
                       placeholder=""
                       value={this.state.item.project_name}
                       onChange={this.handleChange}
-                      // onChange={e => this.setState({name: e.target.value})}
                     />
                   </Col>
                 </FormGroup>
@@ -213,19 +183,21 @@ export default class CreateCampaign extends React.Component {
                     >
                       <DropdownToggle caret>Lựa chọn page</DropdownToggle>
                       <DropdownMenu bottom>
-                      {/* 
-                        {this.state.listPage.map((page) => {
-                          return (
-                            <DropdownItem
-                              onClick={() => this.pageChoice(page.id)}
-                            >
-                              {page.name}
-                            </DropdownItem>
-                          );
-                        })}*/}
-                        {JSON.parse(localStorage.getItem("page")) ? JSON.parse(localStorage.getItem("page")).pages.map(page => {
-                          return (<DropdownItem onClick={() => this.pageChoice(page.page_id)}>{page.page_name}</DropdownItem>)
-                        }) : <DropdownItem>page_name</DropdownItem>}
+                        {JSON.parse(localStorage.getItem("page")) ? (
+                          JSON.parse(localStorage.getItem("page")).pages.map(
+                            (page) => {
+                              return (
+                                <DropdownItem
+                                  onClick={() => this.pageChoice(page.page_id)}
+                                >
+                                  {page.page_name}
+                                </DropdownItem>
+                              );
+                            }
+                          )
+                        ) : (
+                          <DropdownItem>page_name</DropdownItem>
+                        )}
                       </DropdownMenu>
                     </Dropdown>
                   </Col>

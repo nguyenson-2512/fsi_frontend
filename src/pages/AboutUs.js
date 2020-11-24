@@ -5,6 +5,7 @@ import son from "../assets/son.jpg";
 import huong from "../assets/huong.jpg";
 import tran from "../assets/tran.jpg";
 import nam from "../assets/nam.jpg";
+import minh from "../assets/minh.jpg"
 import "bootstrap/dist/css/bootstrap.css";
 import { CheckOutlined } from "@ant-design/icons";
 import Header2 from '../components/Header/Header2'
@@ -49,6 +50,7 @@ export default class AboutUs extends React.Component {
               university="Đại học Greenwich"
             />
             <Info
+              img={minh}
               name="Nguyễn Đức Minh"
               class="React Native"
               university="Đại học Công Nghệ"
