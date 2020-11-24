@@ -23,9 +23,11 @@ export default class CampaignList extends React.Component {
         start_time: "",
         end_time: "",
         description: "",
-        keyword: {keyword: []},
+        lastCollectTime: "2020-11-11T04:21:19.763493+00:00",
+        keyword: { keyword: [] },
         user_id: JSON.parse(localStorage.getItem("user")).id,
         id: Math.floor(Math.random() * 100000000).toString(),
+        page_id: "",
         // id: generateUniqueId()
       },
       showCreateForm: false,
@@ -34,6 +36,10 @@ export default class CampaignList extends React.Component {
   }
 
   componentDidMount() {
+    this.refreshList();
+  }
+
+  componentDidUpdate() {
     this.refreshList();
   }
   refreshList = () => {
@@ -47,6 +53,23 @@ export default class CampaignList extends React.Component {
       })
       // .then(() => this.setState({loading: false}))
       .catch((err) => console.log(err));
+
+    // const info = JSON.parse(localStorage.getItem("user"));
+    // console.log(info)
+    // fetch("https://devc-model.herokuapp.com/user_token", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: {
+    //     access_token: info.token.toString(),
+    //   },
+    // })
+    //   .then((res) => res.json)
+    //   .then((json) => {
+    //     console.log(json);
+    //     localStorage.setItem("longTermToken", JSON.stringify(json));
+    //   });
   };
 
   handleDelete = (item) => {
@@ -65,7 +88,6 @@ export default class CampaignList extends React.Component {
   };
 
   handleSubmit = (item) => {
-    console.log("-item dem di post day: ", item);
     axios
       .post(
         `https://gentle-island-41460.herokuapp.com/all_project/${this.state.item.user_id}`,

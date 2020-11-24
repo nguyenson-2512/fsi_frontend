@@ -17,22 +17,12 @@ export default class Statistics extends React.Component {
 
   componentDidMount() {
     let postRequest = axios.get(
-      // "https://still-peak-07389.herokuapp.com/num_post/777",{ headers: { "Authorization": `JWT ${localStorage.getItem("token")}`}});
-      "https://gentle-island-41460.herokuapp.com/num_post/5");
+      `https://gentle-island-41460.herokuapp.com/num_post/${this.props.project_id}`);
     let commentRequest = axios.get(
-      // "https://gentle-island-41460.herokuapp.com/num_comment/5",{ headers: { "Authorization": `JWT ${localStorage.getItem("token")}`}}
-      "https://gentle-island-41460.herokuapp.com/num_comment/5")
+      `https://gentle-island-41460.herokuapp.com/num_comment/${this.props.project_id}`)
     let likeRequest = axios.get(
-      "https://gentle-island-41460.herokuapp.com/post_alllike/5")
+      `https://gentle-island-41460.herokuapp.com/post_alllike/${this.props.project_id}`)
 
-        //thay 5 (project_id) => this.props.
-      //thay 5 (project_id) => this.props.
-      //thay 5 (project_id) => this.props. dc truyen tu ben detail
-      //thay 5 (project_id) => this.props
-      //thay 5 (project_id) => this.props.
-      //thay 5 (project_id) => this.props.
-      //thay 5 (project_id) => this.props.
-      //thay 5 (project_id) => this.props.
     axios
       .all([postRequest, commentRequest, likeRequest])
       .then(

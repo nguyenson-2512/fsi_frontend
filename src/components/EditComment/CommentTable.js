@@ -9,7 +9,7 @@ import Pagination from "./Pagination";
 import CommentRow from "./CommentRow";
 import useLoader from "../Loader/hook/useLoader";
 
-const CommentTable = () => {
+const CommentTable = (props) => {
   const [comments, setComments] = useState([]);
   const [loader, showLoader, hideLoader] = useLoader();
   const [totalItems, setTotalItems] = useState(0);
@@ -21,11 +21,10 @@ const CommentTable = () => {
   const getData = () => {
     showLoader();
     axios
-      .get("https://gentle-island-41460.herokuapp.com/all_cmt/5")
+      .get(`https://gentle-island-41460.herokuapp.com/all_cmt/${props.project_id}`)
       .then((res) => {
         hideLoader();
         setComments(res.data);
-        console.log(res.data.length);
       })
       .catch((err) => console.log(err));
   };

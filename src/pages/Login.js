@@ -2,6 +2,7 @@ import React from "react";
 import "../App.css";
 import FacebookLoginBtn from "react-facebook-login";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class LoginForm extends React.Component {
   }
 
   responseFacebook = (response) => {
-    console.log(response);
     this.setState({
       username: response.name,
       email: response.email,
@@ -36,24 +36,94 @@ class LoginForm extends React.Component {
       pictureURL: this.state.pictureURL,
     };
 
-    fetch('https://gentle-island-41460.herokuapp.com/user/1', {
-      method: 'POST',
+    const token = {
+      access_token: this.state.accessToken,
+    };
+
+    fetch("https://gentle-island-41460.herokuapp.com/user/1", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('user', JSON.stringify(json));
+      .then((res) => res.json())
+      .then((json) => {
+        localStorage.setItem("user", JSON.stringify(json));
       })
       .then(() => {
-          this.props.history.push("/app");
-    })
+        // console.log(JSON.parse(localStorage.getItem("user")))
+        // const token = JSON.parse(localStorage.getItem("user")).token
+        // console.log('---token', token.toString())
+        fetch("https://devc-model.herokuapp.com/user_token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(token),
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            localStorage.setItem("longTermToken", JSON.stringify(json));
+          });
+      })
+      .then(() => {
+        const userUpdated = JSON.parse(localStorage.getItem("user"));
+        const userId = JSON.parse(localStorage.getItem("user")).id;
+        userUpdated.access_token = JSON.parse(
+          localStorage.getItem("longTermToken")
+        );
+        console.log('new update', userUpdated)
+        axios
+          .put(
+            `https://gentle-island-41460.herokuapp.com/user/${userId}`,
+            userUpdated
+          )
+          .then(() => console.log("put thanh cong"))
+          .catch((err) => console.log(err));
+      })
+      .then(() => {
+        this.props.history.push("/app");
+      });
+    // const tokenAndId = {
+    //   access_token: JSON.parse(localStorage.getItem("longTermToken"))
+    //     .access_token,
+    //   user_id: JSON.parse(localStorage.getItem("user")).id,
+    // };
+
+    // fetch("https://devc-model.herokuapp.com/user_pages", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(tokenAndId),
+    // })
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     localStorage.setItem("page", JSON.stringify(json));
+    //   })
+
+    // .then(() => {
+    //   const tokenAndId = {
+    //     access_token: JSON.parse(localStorage.getItem("longTermToken")).access_token,
+    //     user_id: JSON.parse(localStorage.getItem("user")).id,
+    //   }
+    //   fetch("https://devc-model.herokuapp.com/user_pages", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(tokenAndId),
+    //   })
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     localStorage.setItem("page", JSON.stringify(json));
+    //   })
+    // })
   };
 
   render() {
-    if (localStorage.getItem('user')) {
+    if (localStorage.getItem("user")) {
       return <Redirect to={"/app"} />;
     }
 
@@ -61,13 +131,13 @@ class LoginForm extends React.Component {
       <div className="container-first">
         <p className="title_first leftTitle">Login</p>
         <FacebookLoginBtn
-        appId="666275994291953"
-        autoLoad={false}
-        fields="name,email,picture"
-        callback={this.responseFacebook}
-        scope="public_profile,pages_read_engagement,pages_manage_metadata,pages_read_user_content,pages_manage_posts,pages_manage_engagement"
-      />
-      {/* login && loading */}
+          appId="666275994291953"
+          autoLoad={false}
+          fields="name,email,picture"
+          callback={this.responseFacebook}
+          scope="public_profile,pages_read_engagement,pages_manage_metadata,pages_read_user_content,pages_manage_posts,pages_manage_engagement"
+        />
+        {/* login && loading */}
       </div>
     );
   }

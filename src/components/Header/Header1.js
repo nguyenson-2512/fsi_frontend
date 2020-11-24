@@ -27,6 +27,9 @@ export default function Header1() {
       .then(() => console.log("logout"))
       .catch((err) => console.log(err));
     localStorage.removeItem("user");
+    localStorage.removeItem("longTermToken")
+    localStorage.removeItem("page")
+    localStorage.removeItem("page_choice")
     history.push("/");
   }
 

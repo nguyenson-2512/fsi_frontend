@@ -30,8 +30,8 @@ export default class CommentRow extends React.Component {
           <input
             type="radio"
             // value="1"
-            value="=>  tích cực"
-            checked={this.state.data.effect === "=>  tích cực"}
+            value="2"
+            checked={this.state.data.effect === "2"}
 						onChange={this.onRadioChange}
           />
         </td>
@@ -40,8 +40,8 @@ export default class CommentRow extends React.Component {
           <input
             type="radio"
             // value="-1"
-            value="=>  tiêu cực"
-            checked={this.state.data.effect === "=>  tiêu cực"}
+            value="0"
+            checked={this.state.data.effect === "0"}
 						onChange={this.onRadioChange}
           />
         </td>
@@ -50,9 +50,9 @@ export default class CommentRow extends React.Component {
           <input
             type="radio"
             // value="0"
-            value="=>  trung lập"
+            value="1"
 
-            checked={this.state.data.effect === "=>  trung lập"}
+            checked={this.state.data.effect === "1"}
 						onChange={this.onRadioChange}
           />
 				</td>

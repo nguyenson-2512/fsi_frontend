@@ -18,6 +18,8 @@ import CommentList from "../components/CommentList/CommentList";
 
 import CommentTable from "../components/EditComment/CommentTable";
 
+import CheckLabel from "../components/CheckLabel/CheckLabel"
+
 Chart.defaults.global.defaultFontFamily = "Roboto, sans-serif";
 
 export default class Detail extends React.Component {
@@ -31,8 +33,6 @@ export default class Detail extends React.Component {
       all: 1,
       topCmt1: [],
       topCmt_1: [],
-      comment: "",
-      label: 'Tích cực'
     };
   }
 
@@ -43,27 +43,19 @@ export default class Detail extends React.Component {
     });
 
     let positiveRequest = axios.get(
-      "https://gentle-island-41460.herokuapp.com/num_cmt1/5"
+      `https://gentle-island-41460.herokuapp.com/num_cmt1/${this.props.location.state}`
     );
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
-    //thay 5 (project_id) => this.props.location.state
     let negativeRequest = axios.get(
-      "https://gentle-island-41460.herokuapp.com/num_cmt_1/5"
+      `https://gentle-island-41460.herokuapp.com/num_cmt_1/${this.props.location.state}`
     );
     let neutralRequest = axios.get(
-      "https://gentle-island-41460.herokuapp.com/num_cmt0/5"
+      `https://gentle-island-41460.herokuapp.com/num_cmt0/${this.props.location.state}`
     );
     let topCmt1Request = axios.get(
-      "https://gentle-island-41460.herokuapp.com/cmt1/5"
+      `https://gentle-island-41460.herokuapp.com/cmt1/${this.props.location.state}`
     );
     let topCmt_1Request = axios.get(
-      "https://gentle-island-41460.herokuapp.com/cmt_1/5"
+      `https://gentle-island-41460.herokuapp.com/cmt_1/${this.props.location.state}`
     );
     axios
       .all([
@@ -100,17 +92,17 @@ export default class Detail extends React.Component {
   }
 
   handleChange = (e) => {
-    this.setState({comment: e.target.value})
-    console.log(this.state.comment)
-  }
+    this.setState({ comment: e.target.value });
+    console.log(this.state.comment);
+  };
 
   render() {
     const { location } = this.props;
+    console.log(this.state)
     return (
       <div className="wrapper">
         <Header1 />
-        <Statistics />
-        {/* TRUYỀN PROPS CHO STATÍCTIC LÀ THIS.PROPS.LOCATION.STATE                 <h1>{location.state}</h1>*/ }
+        <Statistics project_id={location.state}/>
 
         <div className="row row-space">
           <div className="col-12 col-m-6 col-sm-6">
@@ -158,7 +150,7 @@ export default class Detail extends React.Component {
                 {this.state.positive === 0 ? (
                   <LoadingOutlined />
                 ) : (
-                  <span className="badge" style={{background : '#8ee3f5'}}>
+                  <span className="badge" style={{ background: "#8ee3f5" }}>
                     {this.state.positive}
                   </span>
                 )}
@@ -168,7 +160,10 @@ export default class Detail extends React.Component {
                 {this.state.negative === 0 ? (
                   <LoadingOutlined />
                 ) : (
-                  <span className="badge" style={{background : '#ff0033', color: 'white'}}>
+                  <span
+                    className="badge"
+                    style={{ background: "#ff0033", color: "white" }}
+                  >
                     {this.state.negative}
                   </span>
                 )}
@@ -178,7 +173,10 @@ export default class Detail extends React.Component {
                 {this.state.neutral === 0 ? (
                   <LoadingOutlined />
                 ) : (
-                  <span className="badge" style={{background : '#b08ea2', color: 'white'}}>
+                  <span
+                    className="badge"
+                    style={{ background: "#b08ea2", color: "white" }}
+                  >
                     {this.state.neutral}
                   </span>
                 )}
@@ -233,44 +231,16 @@ export default class Detail extends React.Component {
 
         <div className="row row-space">
           <div className="col-12 col-m-12 col-sm-12">
-            <CommentTable />
+            <CommentTable project_id={location.state}/>
             {/* TRUYỀN PROPS CHO COMMENTTABLE LÀ THIS.PROPS.LOCATION.STATE*/}
           </div>
         </div>
 
         <div className="row row-space">
-        <div className="col-12 col-m-12 col-sm-12">
-          
-        <div className="card">
-        <div className="card-header">
-          <h3>
-            Kiểm tra gán nhãn
-          </h3>
+          <div className="col-12 col-m-12 col-sm-12">
+            <CheckLabel />
+          </div>
         </div>
-        <div className="card-content">
-          <table className="table-bordered">
-            <thead style={{ background: "#e8eaf9" }}>
-              <tr>
-                <th>Nhập comment</th>
-                <th>Gán nhãn</th>
-              </tr>
-              <tr>
-              <td>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Nhập comment bạn muốn kiểm tra"
-                value={this.state.comment}
-                onChange={this.handleChange}
-            /></td>
-            <td>{this.state.label}</td>
-              </tr>
-            </thead>
-          </table>
-        </div>
-      </div>
-        </div>
-      </div>
       </div>
     );
   }

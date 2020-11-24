@@ -9,7 +9,10 @@ import {
   FormGroup,
   Input,
   Button,
-  Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 
 import "../../App.css";
@@ -22,9 +25,33 @@ export default class CreateCampaign extends React.Component {
     this.state = {
       item: this.props.item,
       dropdownOpen: false,
-      listPage: [{id: 1,name: 'page1'},{id: 2,name: 'page2'},{id: 3,name: 'page3'}]
+      listPage: [
+        { id: 1, name: "page1" },
+        { id: 2, name: "page2" },
+        { id: 3, name: "page3" },
+      ],
+      userPages: {},
+      page_choice: ''
     };
     this.myRef = React.createRef();
+  }
+
+  componentWillMount() {
+    const tokenAndId = {
+      access_token: JSON.parse(localStorage.getItem("longTermToken")).access_token,
+      user_id: JSON.parse(localStorage.getItem("user")).id,
+    };
+    fetch("https://devc-model.herokuapp.com/user_pages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(tokenAndId),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        localStorage.setItem("page", JSON.stringify(json));
+      });
   }
 
   componentDidMount() {
@@ -35,6 +62,36 @@ export default class CreateCampaign extends React.Component {
         inline: "nearest",
       });
     }
+    // const info = {
+    //   access_token: JSON.parse(localStorage.getItem("longTermToken")).access_token,
+    //   user_id: JSON.parse(localStorage.getItem("user")).id,
+    // }
+
+    // fetch("https://devc-model.herokuapp.com/user_pages", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(info),
+    // })
+    // .then(res => res.json())
+    // .then(json => {
+    //   console.log(json)
+    //   this.setState({userPages: json})
+    // })
+    // .then((res) => res.json())
+    // .then((json) => {
+    //   localStorage.setItem("page", JSON.stringify(json));
+    //   this.setState({userPages: JSON.parse(localStorage.getItem("page"))})
+    // })
+    // axios
+    // .post(
+    //   "https://devc-model.herokuapp.com/user_pages",
+    //   info
+    // )
+    // .then((res) => this.setState({
+    //   userPages: res.data
+    // }))
   }
 
   handleChange = (e) => {
@@ -51,14 +108,18 @@ export default class CreateCampaign extends React.Component {
   };
 
   toggle = () => {
-    this.setState({dropdownOpen: !this.state.dropdownOpen});
-  }
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  };
 
   pageChoice = (id) => {
-    alert(id)
-  }
+    // alert(id);
+    const item = { ...this.state.item, page_id: id}
+    localStorage.setItem("page_choice",id)
+    this.setState({item})
+  };
   render() {
     const { onSubmit } = this.props;
+    console.log(this.state.item)
     return (
       <div style={{ margin: "0 auto" }} className="wrapper" ref={this.myRef}>
         <div className="row">
@@ -144,22 +205,31 @@ export default class CreateCampaign extends React.Component {
                   </Col>
                 </FormGroup>
 
-
                 <FormGroup row>
-                <Col sm={10}>
-                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                <DropdownToggle caret>
-                  Lựa chọn page
-                </DropdownToggle>
-                <DropdownMenu bottom>
-                  {this.state.listPage.map((page) => {
-                    return <DropdownItem onClick={() => this.pageChoice(page.id)}>{page.name}</DropdownItem>
-                  })}
-                </DropdownMenu>
-              </Dropdown>
-              </Col>
-
-              </FormGroup>
+                  <Col sm={10}>
+                    <Dropdown
+                      isOpen={this.state.dropdownOpen}
+                      toggle={this.toggle}
+                    >
+                      <DropdownToggle caret>Lựa chọn page</DropdownToggle>
+                      <DropdownMenu bottom>
+                      {/* 
+                        {this.state.listPage.map((page) => {
+                          return (
+                            <DropdownItem
+                              onClick={() => this.pageChoice(page.id)}
+                            >
+                              {page.name}
+                            </DropdownItem>
+                          );
+                        })}*/}
+                        {JSON.parse(localStorage.getItem("page")) ? JSON.parse(localStorage.getItem("page")).pages.map(page => {
+                          return (<DropdownItem onClick={() => this.pageChoice(page.page_id)}>{page.page_name}</DropdownItem>)
+                        }) : <DropdownItem>page_name</DropdownItem>}
+                      </DropdownMenu>
+                    </Dropdown>
+                  </Col>
+                </FormGroup>
 
                 <FormGroup row>
                   <Label for="description" sm={5}>
@@ -171,8 +241,14 @@ export default class CreateCampaign extends React.Component {
                       maxTags={10}
                       placeholder="Nhập và nhấn enter"
                       onChange={(newTags) => {
-                        const item = {...this.state.item, keyword: {...this.state.item.keyword, keyword: newTags}}
-                        this.setState({item});
+                        const item = {
+                          ...this.state.item,
+                          keyword: {
+                            ...this.state.item.keyword,
+                            keyword: newTags,
+                          },
+                        };
+                        this.setState({ item });
                       }}
                     />
                   </Col>
